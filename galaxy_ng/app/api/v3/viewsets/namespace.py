@@ -1,12 +1,9 @@
+
 from django.db import transaction
 from django.db.models import Q
 from django_filters import filters
 from django_filters.rest_framework import filterset, DjangoFilterBackend
-<<<<<<< HEAD
-=======
 from rest_framework.exceptions import ValidationError
-from pulp_ansible.app.models import AnsibleRepository, AnsibleDistribution
->>>>>>> e6df839 (Fix Keyerror on Namespace viewset when name is not provided)
 
 from galaxy_ng.app import models
 from galaxy_ng.app.access_control.access_policy import NamespaceAccessPolicy
@@ -57,15 +54,10 @@ class NamespaceViewSet(api_base.ModelViewSet):
 
     @transaction.atomic
     def create(self, request, *args, **kwargs):
-<<<<<<< HEAD
         """Override to validate for name duplication before serializer validation."""
-        name = request.data['name']
-=======
-        """Override to also create inbound pulp repository and distribution."""
         name = request.data.get('name')
         if name is None:
-            raise ValidationError(detail={"name": "This field is required."})
->>>>>>> e6df839 (Fix Keyerror on Namespace viewset when name is not provided)
+            raise ValidationError(detail={'name': 'Name is required'})
         if models.Namespace.objects.filter(name=name).exists():
             # Ensures error raised is 409, not 400.
             raise ConflictError(
