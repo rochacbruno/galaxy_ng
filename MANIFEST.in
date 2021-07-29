@@ -1,2 +1,7 @@
+include CHANGES.rst
+include COMMITMENT
+include LICENSE
+include unittest_requirements.txt
+include pyproject.toml
 include galaxy_ng/app/webserver_snippets/*
-recursive-include galaxy_ng/app/static/ *
+recursive-include galaxy_ng/app/static/*
