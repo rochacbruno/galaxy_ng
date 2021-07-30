@@ -10,6 +10,7 @@ on: {pull_request: {branches: ['*']}, push: {branches: ['*']}}
 jobs:
 
   galaxy:
+
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
