@@ -71,12 +71,18 @@ then
   export PULP_SMASH_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/pulp\/pulp-smash\/pull\/(\d+)' | awk -F'/' '{print $7}')
   export PULP_OPENAPI_GENERATOR_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/pulp\/pulp-openapi-generator\/pull\/(\d+)' | awk -F'/' '{print $7}')
   export PULP_CLI_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/pulp\/pulp-cli\/pull\/(\d+)' | awk -F'/' '{print $7}')
+  export PULP_ANSIBLE_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/pulp\/pulp_ansible\/pull\/(\d+)' | awk -F'/' '{print $7}')
+  export PULP_CONTAINER_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/pulp\/pulp_container\/pull\/(\d+)' | awk -F'/' '{print $7}')
+  export GALAXY_IMPORTER_PR_NUMBER=$(echo $COMMIT_MSG | grep -oP 'Required\ PR:\ https\:\/\/github\.com\/ansible\/galaxy-importer\/pull\/(\d+)' | awk -F'/' '{print $7}')
   echo $COMMIT_MSG | sed -n -e 's/.*CI Base Image:\s*\([-_/[:alnum:]]*:[-_[:alnum:]]*\).*/ci_base: "\1"/p' >> .ci/ansible/vars/main.yaml
 else
   export PULPCORE_PR_NUMBER=
   export PULP_SMASH_PR_NUMBER=
   export PULP_OPENAPI_GENERATOR_PR_NUMBER=
   export PULP_CLI_PR_NUMBER=
+  export PULP_ANSIBLE_PR_NUMBER=
+  export PULP_CONTAINER_PR_NUMBER=
+  export GALAXY_IMPORTER_PR_NUMBER=
   export CI_BASE_IMAGE=
 fi
 
@@ -115,6 +121,30 @@ if [ -n "$PULPCORE_PR_NUMBER" ]; then
 fi
 cd ..
 
+
+git clone --depth=1 https://github.com/pulp/pulp_ansible.git --branch 0.9.0
+if [ -n "$PULP_ANSIBLE_PR_NUMBER" ]; then
+  cd pulp_ansible
+  git fetch --depth=1 origin pull/$PULP_ANSIBLE_PR_NUMBER/head:$PULP_ANSIBLE_PR_NUMBER
+  git checkout $PULP_ANSIBLE_PR_NUMBER
+  cd ..
+fi
+
+git clone --depth=1 https://github.com/pulp/pulp_container.git --branch 2.7.1
+if [ -n "$PULP_CONTAINER_PR_NUMBER" ]; then
+  cd pulp_container
+  git fetch --depth=1 origin pull/$PULP_CONTAINER_PR_NUMBER/head:$PULP_CONTAINER_PR_NUMBER
+  git checkout $PULP_CONTAINER_PR_NUMBER
+  cd ..
+fi
+
+git clone --depth=1 https://github.com/ansible/galaxy-importer.git --branch v0.3.4
+if [ -n "$GALAXY_IMPORTER_PR_NUMBER" ]; then
+  cd galaxy-importer
+  git fetch --depth=1 origin pull/$GALAXY_IMPORTER_PR_NUMBER/head:$GALAXY_IMPORTER_PR_NUMBER
+  git checkout $GALAXY_IMPORTER_PR_NUMBER
+  cd ..
+fi
 
 
 

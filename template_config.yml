@@ -3,12 +3,19 @@
 
 # generated with plugin_template@2021.04.08-87-g2136629-dirty
 
-additional_plugins:
-- branch: master
-  name: pulp_ansible
-- branch: master
-  name: pulp_container
-additional_repos: []
+additional_repos:
+  - name: pulp_ansible
+    org: pulp
+    bindings: true
+    branch: 0.9.0
+  - name: pulp_container
+    org: pulp
+    bindings: true
+    branch: 2.7.1
+  - name: galaxy-importer
+    bindings: false
+    org: ansible
+    branch: v0.3.4
 black: false
 check_commit_message: false
 check_gettext: true
@@ -25,7 +32,7 @@ deploy_daily_client_to_rubygems: false
 deploy_to_pypi: false
 docker_fixtures: false
 docs_test: false
-flake8: false
+flake8: true
 issue_tracker: null
 plugin_app_label: galaxy
 plugin_camel: GalaxyNG

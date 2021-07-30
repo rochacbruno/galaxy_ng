@@ -70,6 +70,26 @@ if [[ "$TEST" = 'bindings' ]]; then
   gem build pulpcore_client.gemspec
   gem install --both ./pulpcore_client-0.gem
 fi
+./generate.sh pulp_ansible python
+pip install ./pulp_ansible-client
+rm -rf ./pulp_ansible-client
+if [[ "$TEST" = 'bindings' ]]; then
+  ./generate.sh pulp_ansible ruby 0
+  cd pulp_ansible-client
+  gem build pulp_ansible_client.gemspec
+  gem install --both ./pulp_ansible_client-0.gem
+  cd ..
+fi
+./generate.sh pulp_container python
+pip install ./pulp_container-client
+rm -rf ./pulp_container-client
+if [[ "$TEST" = 'bindings' ]]; then
+  ./generate.sh pulp_container ruby 0
+  cd pulp_container-client
+  gem build pulp_container_client.gemspec
+  gem install --both ./pulp_container_client-0.gem
+  cd ..
+fi
 cd $REPO_ROOT
 
 if [[ "$TEST" = 'bindings' ]]; then

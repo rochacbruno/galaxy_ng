@@ -50,7 +50,9 @@ jobs:
 
       
 
-      
+      # Lint code.
+      - name: Run flake8
+        run: flake8 --config flake8.cfg
 
       # check for any files unintentionally left out of MANIFEST.in
       - name: Check manifest
@@ -123,6 +125,10 @@ jobs:
       - name: Script
         run: .github/workflows/scripts/script.sh
         shell: bash
+        env:
+          GITHUB_PULL_REQUEST: ${{ github.event.number }}
+          GITHUB_BRANCH: ${{ github.head_ref }}
+          GITHUB_REPO_SLUG: ${{ github.repository }}
 
       - name: After failure
         if: failure()
