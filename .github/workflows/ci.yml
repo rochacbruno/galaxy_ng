@@ -9,7 +9,7 @@ name: Pulp CI
 on: {pull_request: {branches: ['*']}, push: {branches: ['*']}}
 jobs:
 
-  galaxy:
+  check_commit:
 
     runs-on: ubuntu-latest
     steps:
@@ -29,7 +29,7 @@ jobs:
 
   lint:
     runs-on: ubuntu-latest
-    needs: galaxy
+    needs: check_commit
 
     steps:
       - uses: actions/checkout@v2
