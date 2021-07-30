@@ -1,8 +1,6 @@
 #!/bin/bash
 
 
-## Update Manifest
-
 set -o nounset
 set -o errexit
 
