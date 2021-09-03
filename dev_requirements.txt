@@ -1,3 +1,6 @@
+# This file contains dev requirements to be installed on dev host only 
+# to add requirements to dev container see requirements/requirements-dev.txt
+
 coverage
 flake8
 
@@ -8,5 +11,8 @@ flake8-docstrings
 
 flake8-tuple
 flake8-quotes
+darker
 
 check-manifest
+orionutils
+fauxfactory

@@ -1,10 +1,9 @@
 import contextlib
-from django.db import models
-from django.db import transaction
-from django.db import IntegrityError
+
+from django.db import IntegrityError, models, transaction
 from django_lifecycle import LifecycleModel
+from pulp_ansible.app.models import AnsibleDistribution, AnsibleRepository
 from pulpcore.plugin.models import AutoDeleteObjPermsMixin
-from pulp_ansible.app.models import AnsibleRepository, AnsibleDistribution
 
 from galaxy_ng.app.access_control import mixins
 from galaxy_ng.app.constants import INBOUND_REPO_NAME_FORMAT
@@ -19,11 +18,12 @@ def create_inbound_repo(name):
         # IntegrityError is suppressed for when the named repo/distro already exists
         # In that cases the error handling is performed on the caller.
         repo = AnsibleRepository.objects.create(name=inbound_name)
-        AnsibleDistribution.objects.create(
+        distro = AnsibleDistribution.objects.create(
             name=inbound_name,
             base_path=inbound_name,
             repository=repo
         )
+        return distro
 
 
 def delete_inbound_repo(name):

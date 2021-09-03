@@ -1,48 +1,44 @@
 import logging
 
 import requests
-
-from django.core.exceptions import ValidationError, ObjectDoesNotExist
-
 from django.conf import settings
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponseRedirect, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-
-from rest_framework.response import Response
-from rest_framework.exceptions import APIException, NotFound
-
+from pulp_ansible.app.galaxy.v3 import views as pulp_ansible_views
+from pulp_ansible.app.models import AnsibleDistribution
+from pulp_ansible.app.models import CollectionImport as PulpCollectionImport
+from pulp_ansible.app.models import CollectionVersion
 from pulpcore.plugin.models import Task
 from pulpcore.plugin.tasking import dispatch
-from pulp_ansible.app.galaxy.v3 import views as pulp_ansible_views
-from pulp_ansible.app.models import CollectionVersion, AnsibleDistribution
-from pulp_ansible.app.models import CollectionImport as PulpCollectionImport
-from galaxy_ng.app.api import base as api_base
+from rest_framework.exceptions import APIException, NotFound
+from rest_framework.mixins import DestroyModelMixin
+from rest_framework.request import Request
+from rest_framework.response import Response
 
-from galaxy_ng.app.constants import DeploymentMode, INBOUND_REPO_NAME_FORMAT
 from galaxy_ng.app import models
 from galaxy_ng.app.access_control import access_policy
-
+from galaxy_ng.app.api import base as api_base
 from galaxy_ng.app.api.utils import SocketHTTPAdapter
 from galaxy_ng.app.api.v3.serializers import (
     CollectionSerializer,
+    CollectionUploadSerializer,
+    CollectionVersionListSerializer,
     CollectionVersionSerializer,
     UnpaginatedCollectionVersionSerializer,
-    CollectionVersionListSerializer,
-    CollectionUploadSerializer,
 )
-
 from galaxy_ng.app.common import metrics
+from galaxy_ng.app.common.parsers import AnsibleGalaxy29MultiPartParser
+from galaxy_ng.app.constants import INBOUND_REPO_NAME_FORMAT, DeploymentMode
 from galaxy_ng.app.tasks import (
-    import_and_move_to_staging,
-    import_and_auto_approve,
     call_copy_task,
     call_remove_task,
     curate_all_synclist_repository,
+    import_and_auto_approve,
+    import_and_move_to_staging,
 )
-
-from galaxy_ng.app.common.parsers import AnsibleGalaxy29MultiPartParser
 
 log = logging.getLogger(__name__)
 
@@ -95,12 +91,47 @@ class UnpaginatedCollectionVersionViewSet(api_base.LocalSettingsMixin,
     permission_classes = [access_policy.CollectionAccessPolicy]
 
 
-class CollectionVersionViewSet(api_base.LocalSettingsMixin,
-                               ViewNamespaceSerializerContextMixin,
-                               pulp_ansible_views.CollectionVersionViewSet):
+class CollectionVersionViewSet(
+    api_base.LocalSettingsMixin,
+    ViewNamespaceSerializerContextMixin,
+    DestroyModelMixin,
+    pulp_ansible_views.CollectionVersionViewSet,
+):
     serializer_class = CollectionVersionSerializer
     permission_classes = [access_policy.CollectionAccessPolicy]
     list_serializer_class = CollectionVersionListSerializer
+
+    def destroy(self, request: Request, *args, **kwargs) -> Response:
+        """
+        Allow a CollectionVersion to be deleted.
+
+        1. Perform Dependency Check to verify that the collection version can be deleted
+        2. If it can, perform Collection Repository Cleanup
+        3. If the collection version can’t be deleted, return the reason why
+        4. If the version being deleted is the last collection version in the collection,
+           remove the collection object as well.
+        """
+        collection_version = self.get_object()
+        # dependency check
+        dependent_collections = ["foo.bar"]  # get_collections_that_depend_on(collection_version)
+        if dependent_collections:
+            return Response(
+                {
+                    "detail": _(
+                        "Collection {namespace}.{name} could not be deleted "
+                        "because there are other collections that require it."
+                    ).format(
+                        namespace=collection_version.namespace,
+                        name=collection_version.collection.name,
+                    ),
+                    "dependent_collections": dependent_collections,
+                },
+                status=400,
+            )
+        # collection repo cleanup
+
+        # collection_version.perform_destroy()
+        return Response(status=204)
 
 
 class CollectionVersionDocsViewSet(api_base.LocalSettingsMixin,

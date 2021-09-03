@@ -1,7 +1,12 @@
+# This file contains dev requirements to be installed inside container image.
+# to add requirements to developer host machine see dev_requirements.txt
+
 ipython
 ipdb
 pdbr
 django-extensions
+orionutils
+fauxfactory
 
 jedi==0.17.2
 # jedi 0.18.x is buggy when used with ipython

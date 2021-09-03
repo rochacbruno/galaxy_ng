@@ -1,15 +1,20 @@
 from unittest.case import skip
-from django.urls.base import reverse
-from galaxy_ng.app.constants import DeploymentMode
-from django.test.utils import override_settings
+from uuid import uuid4
 
+from django.test.utils import override_settings
+from django.urls.base import reverse
+from orionutils.generator import build_collection
 from pulp_ansible.app.models import (
     AnsibleDistribution,
     AnsibleRepository,
     Collection,
     CollectionVersion,
 )
+
 from galaxy_ng.app import models
+from galaxy_ng.app.constants import DeploymentMode
+from galaxy_ng.tests.unit.constants import TEST_COLLECTION_CONFIGS
+
 from .base import BaseTestCase
 
 
@@ -38,7 +43,6 @@ class TestCollectionViewsets(BaseTestCase):
 
     def setUp(self):
         super().setUp()
-
         self.admin_user = self._create_user("admin")
         self.pe_group = self._create_partner_engineer_group()
         self.admin_user.groups.add(self.pe_group)
@@ -62,9 +66,6 @@ class TestCollectionViewsets(BaseTestCase):
             '1.1.2',
             self.repo
         )
-
-        # TODO: Upload pulp_ansible/tests/assets collection
-        #       or create dummy ContentArtifacts directly
 
         self.collections_url = reverse(
             'galaxy:api:content:v3:collections-list',
@@ -101,31 +102,73 @@ class TestCollectionViewsets(BaseTestCase):
             }
         )
 
-        # The following URLS are temporary deatived due to https://issues.redhat.com/browse/AAH-224
-        # metadata urls
-        # self.all_collections_url = reverse(
-        #     'galaxy:api:content:v3:all-collections-list',
-        #     kwargs={
-        #         'path': self.repo.name,
-        #     }
-        # )
+        self.collection_upload_url = reverse(
+            "galaxy:api:v3:default-content:collection-artifact-upload"
+        )
 
-        # self.all_versions_url = reverse(
-        #     'galaxy:api:content:v3:all-collection-versions-list',
-        #     kwargs={
-        #         'path': self.repo.name,
-        #     }
-        # )
+        self.all_collections_url = reverse(
+            "galaxy:api:content:v3:all-collections-list",
+            kwargs={
+                "path": self.repo.name,
+            },
+        )
 
-        # self.metadata_url = reverse(
-        #     'galaxy:api:content:v3:repo-metadata',
-        #     kwargs={
-        #         'path': self.repo.name,
-        #     }
-        # )
+        self.all_versions_url = reverse(
+            "galaxy:api:content:v3:all-collection-versions-list",
+            kwargs={
+                "path": self.repo.name,
+            },
+        )
+
+        self.metadata_url = reverse(
+            "galaxy:api:content:v3:repo-metadata",
+            kwargs={
+                "path": self.repo.name,
+            },
+        )
 
         # used for href tests
         self.pulp_href_fragment = "pulp_ansible/galaxy"
+
+    def upload_collections(self, namespace=None, collection_configs=None):
+        """using the config from TEST_COLLECTION_CONFIGS,
+        generates and uploads collections to pulp_ansible/galaxy.
+        """
+        collection_configs = collection_configs or TEST_COLLECTION_CONFIGS
+        self._create_namespace(namespace, groups=[self.pe_group])
+        collections = []
+        for config in collection_configs:
+            config["namespace"] = namespace
+            collection = build_collection("skeleton", config=config)
+            response = self.client.post(
+                self.collection_upload_url, {"file": open(collection.filename, "rb")}
+            )
+            collections.append((collection, response))
+        return collections
+
+    def test_upload_collection(self):
+        """Test successful upload of collections generated with orionutils.
+
+        Dependency Trees:
+        A               E
+        |             /   \
+        B            F     G
+        |            |     |
+        C         H(1-3)   D
+        |
+        D
+
+        H has 5 versions, no dependencies
+        """
+        self.client.force_authenticate(user=self.admin_user)
+        collections = self.upload_collections(namespace=uuid4().hex)
+        self.assertEqual(len(collections), 12)
+        # assert each collection returned a 202
+        for collection in collections:
+            self.assertEqual(collection[1].status_code, 202)
+
+        # TODO: test dependencies
+        # TODO: test deletion
 
     def test_collections_list(self):
         """Assert the call to v3/collections returns correct
