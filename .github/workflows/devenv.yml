@@ -1,0 +1,42 @@
+name: Dev Environment
+on:
+  push:
+    branches:
+      - test_dev_env
+  # schedule:
+  #   # * is a special character in YAML so you have to quote this string
+  #   # runs at 4:00 UTC daily
+  #   - cron: '00 5 * * *'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+
+jobs:
+  dev:
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+        os: [ubuntu-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: set the compose file
+        run: |
+          cp .compose.env.example .compose.env
+      - name: build the images
+        run: |
+          make docker/build docker/migrate docker/loaddata
+      - name: run the services
+        run: |
+          ./compose up -d
+      - name: crete collections
+        run: |
+          ./compose run --rm api django-admin create-test-collections --prefix=ci --ns=1 --cols=2 -y
+      - name: test collections has been created
+        run: |
+          make api/get URL=/content/published/v3/collections/
