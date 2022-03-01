@@ -86,7 +86,9 @@ docker/loaddata:  ## Load initial data from fixtures
 
 .PHONY: docker/loadtoken
 docker/loadtoken: 
-	./compose run api manage shell < dev/standalone/create_admin_token.py
+	#./compose run api manage shell < dev/standalone/create_admin_token.py
+	# with the below command it runs on existing container
+	$(call exec_or_run, api, bash, -c "django-admin shell < app/dev/standalone/create_admin_token.py")
 
 .PHONY: docker/makemigrations
 docker/makemigrations:   ## Run django migrations
