@@ -33,6 +33,8 @@ collection_signing: Related to collection signing.
 delete: Tests for deleting objects.
 move: Related to the move api.
 synclist: Related to synclist object and synclist repo.
+openapi: Checks the openapi schema and routes.
+openapi_generate_bindings: Verifies pulp client bindings generator
 """
 
 
