@@ -25,4 +25,14 @@
          <lastmod>2022-03-10</lastmod>
          <changefreq>daily</changefreq>
     </url>
+    <url>
+         <loc>https://ansible.github.io/galaxy_ng/4.5.0/tags/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://ansible.github.io/galaxy_ng/4.5.0/tags/</loc>
+         <lastmod>2022-03-10</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
 </urlset>
