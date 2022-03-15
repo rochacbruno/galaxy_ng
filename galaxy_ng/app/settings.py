@@ -48,6 +48,9 @@ GALAXY_API_SYNCLIST_NAME_FORMAT = "{account_name}-synclist"
 # Require approval for incoming content, which uses a staging repository
 GALAXY_REQUIRE_CONTENT_APPROVAL = True
 
+# Require a signature to be present on a collection before it can be approved
+GALAXY_REQUIRE_SIGNATURE_FOR_APPROVAL = False
+
 # Number of synclist to be processed in single task
 SYNCLIST_BATCH_SIZE = 200
 
@@ -69,7 +72,18 @@ GALAXY_DEPLOYMENT_MODE = 'standalone'
 
 # Dictionary with True|False values for the application to turn on/off features
 GALAXY_FEATURE_FLAGS = {
-    'execution_environments': True,  # False will make execution_environments endpoints 404
+    # False will make execution_environments endpoints 404
+    'execution_environments': True,
+
+    # False will disable the on-demand sign/collections/ endpoints
+    'collection_signing_api': False,
+
+    # False will disable the collection_signatures/ upload endpoint
+    'collection_signature_upload': False,
+
+    # NOTE: Extra feature flags are computed on dynaconf_hooks.py
+    # collection_signing: System has signing service enabled
+    # collection_auto_sign: System has auto-signing on move/approval enabled
 }
 
 AUTH_PASSWORD_VALIDATORS = [

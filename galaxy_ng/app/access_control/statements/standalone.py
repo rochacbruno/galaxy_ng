@@ -84,6 +84,14 @@ STANDALONE_STATEMENTS = {
             "condition": "can_sign_collections"
         }
     ],
+    "CollectionVersionSignatureViewSet": [
+        {
+            "action": "create",
+            "principal": "authenticated",
+            "effect": "allow",
+            "condition": "can_upload_collection_signature",
+        },
+    ],
     'CollectionRemoteViewSet': [
         {
             "action": ["list", "retrieve"],

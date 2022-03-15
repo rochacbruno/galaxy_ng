@@ -1,7 +1,7 @@
 import os
 from typing import Any, Dict
 
-from dynaconf import Dynaconf
+from dynaconf import Dynaconf, Validator
 
 
 def post(settings: Dynaconf) -> Dict[str, Any]:
@@ -21,6 +21,7 @@ def post(settings: Dynaconf) -> Dict[str, Any]:
     data.update(configure_cors(settings))
     data.update(configure_feature_flags(settings))
 
+    validate(settings)
     return data
 
 
@@ -279,3 +280,20 @@ def configure_feature_flags(settings: Dynaconf) -> Dict[str, Any]:
     data["GALAXY_FEATURE_FLAGS__collection_auto_sign"] = settings.get(
         "GALAXY_AUTO_SIGN_COLLECTIONS", False)
     return data
+
+
+def validate(settings: Dynaconf) -> None:
+    """Validate the configuration, raise ValidationError if invalid"""
+    settings.validators.register(
+        Validator(
+            "GALAXY_REQUIRE_SIGNATURE_FOR_APPROVAL",
+            eq=False,
+            when=Validator(
+                "GALAXY_REQUIRE_CONTENT_APPROVAL", eq=False,
+            ),
+            messages={
+                "operations": "{name} cannot be True if GALAXY_REQUIRE_CONTENT_APPROVAL is False"
+            },
+        ),
+    )
+    settings.validators.validate()

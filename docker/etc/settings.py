@@ -17,6 +17,7 @@ GALAXY_PERMISSION_CLASSES = ['rest_framework.permissions.IsAuthenticated',
 
 # GALAXY_AUTO_SIGN_COLLECTIONS = True
 # GALAXY_COLLECTION_SIGNING_SERVICE = "ansible-default"
+# GALAXY_REQUIRE_SIGNATURE_FOR_APPROVAL = True
 """
 By default the signing variables are not set.
 if one want to enable signing, then set the following variables

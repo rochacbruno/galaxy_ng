@@ -86,6 +86,17 @@ INSIGHTS_STATEMENTS = {
             ],
         },
     ],
+    "CollectionVersionSignatureViewSet": [
+        {
+            "action": "create",
+            "principal": "authenticated",
+            "effect": "allow",
+            "condition": [
+                "can_upload_collection_signature",
+                "has_rh_entitlements",
+            ]
+        },
+    ],
     "CollectionRemoteViewSet": [
         {"action": ["list", "retrieve"], "principal": "authenticated", "effect": "allow"},
         {

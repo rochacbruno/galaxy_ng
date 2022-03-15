@@ -12,6 +12,7 @@ from pulp_ansible.app.galaxy.v3 import views as pulp_ansible_views
 from pulp_ansible.app.models import AnsibleDistribution
 from pulp_ansible.app.models import CollectionImport as PulpCollectionImport
 from pulp_ansible.app.models import CollectionVersion
+from pulp_ansible.app import viewsets as pulp_viewsets
 from pulpcore.plugin.models import SigningService
 from pulpcore.plugin.models import Task
 from pulpcore.plugin.serializers import AsyncOperationResponseSerializer
@@ -231,6 +232,10 @@ class CollectionVersionDocsViewSet(api_base.LocalSettingsMixin,
 class CollectionImportViewSet(api_base.LocalSettingsMixin,
                               pulp_ansible_views.CollectionImportViewSet):
     permission_classes = [access_policy.CollectionAccessPolicy]
+
+
+class CollectionVersionSignatureViewSet(pulp_viewsets.CollectionVersionSignatureViewSet):
+    permission_classes = [access_policy.CollectionVersionSignatureAccessPolicy]
 
 
 class CollectionUploadViewSet(api_base.LocalSettingsMixin,

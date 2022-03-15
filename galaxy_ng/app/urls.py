@@ -5,6 +5,7 @@ from django.urls import include, path
 
 from . import views
 from galaxy_ng.app.api import urls as api_urls
+from galaxy_ng.app.api.v3 import viewsets
 from galaxy_ng.app import customadmin as admin
 from galaxy_ng.ui import urls as ui_urls
 
@@ -53,3 +54,22 @@ if settings.get("SOCIAL_AUTH_KEYCLOAK_KEY"):
     urlpatterns.append(url("", include("social_django.urls", namespace="social")))
     urlpatterns.append(path("login/",
                        lambda request: redirect("/login/keycloak/", permanent=False)))
+
+
+if settings.GALAXY_FEATURE_FLAGS.get("collection_signing_api"):
+    urlpatterns.append(
+        path(
+             f"{API_PATH_PREFIX}/v3/sign/collections/",
+            viewsets.CollectionSignViewSet.as_view({"post": "sign"}),
+            name="collection-sign"
+        )
+    )
+
+if settings.GALAXY_FEATURE_FLAGS.get("collection_signature_upload"):
+    urlpatterns.append(
+        path(
+             f"{API_PATH_PREFIX}/v3/collection_signatures/",
+            viewsets.CollectionVersionSignatureViewSet.as_view({"post": "create"}),
+            name="collection-signature-upload"
+        ),
+    )

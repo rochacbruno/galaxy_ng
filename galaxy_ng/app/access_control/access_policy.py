@@ -5,6 +5,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_access_policy import AccessPolicy
 from rest_framework.exceptions import NotFound
 
+from pulp_ansible.app.models import AnsibleRepository
 from pulp_container.app.access_policy import NamespacedAccessPolicyMixin
 from pulp_container.app import models as container_models
 
@@ -72,6 +73,26 @@ class NamespaceAccessPolicy(UnauthenticatedCollectionAccessMixin, AccessPolicyBa
     NAME = "NamespaceViewSet"
 
 
+class CollectionVersionSignatureAccessPolicy(UnauthenticatedCollectionAccessMixin, AccessPolicyBase):
+    NAME = "CollectionVersionSignatureViewSet"
+
+    def can_upload_collection_signature(self, request, view, permission):
+        """Check user permission to upload signature to a specific repository.
+
+        collection_signature upload requires: repository: str
+
+        If user has permission to modify the repository then user has permission
+        to upload signature to it.
+        """
+        repository_name = request.data.get("repository")
+        try:
+            repository = AnsibleRepository.objects.get(name=repository_name)
+        except AnsibleRepository.DoesNotExist:
+            raise NotFound(_("Repository %s not found.", repository_name))
+
+        return request.user.has_perm("ansible.modify_ansible_repo_content", repository)
+
+
 class CollectionAccessPolicy(UnauthenticatedCollectionAccessMixin, AccessPolicyBase):
     NAME = "CollectionViewSet"
 
@@ -104,7 +125,9 @@ class CollectionAccessPolicy(UnauthenticatedCollectionAccessMixin, AccessPolicyB
                 namespace = models.Namespace.objects.get(name=namespace)
             except models.Namespace.DoesNotExist:
                 raise NotFound(_('Namespace not found.'))
-            return request.user.has_perm('galaxy.upload_to_namespace', namespace)
+            return can_modify_repo and request.user.has_perm(
+                'galaxy.upload_to_namespace', namespace
+            )
 
         # the other filtering options are content_units and name/version
         # and falls on the same permissions as modifying the main repo

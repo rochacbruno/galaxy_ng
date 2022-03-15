@@ -4,6 +4,10 @@ from pulp_ansible.app import models as pulp_models
 
 class RepositorySerializer(serializers.ModelSerializer):
     content_count = serializers.SerializerMethodField()
+    keyring = serializers.CharField(
+        source='ansible_ansiblerepository.keyring',
+        read_only=True
+    )
 
     class Meta:
         model = pulp_models.AnsibleRepository
@@ -12,7 +16,8 @@ class RepositorySerializer(serializers.ModelSerializer):
             'description',
             'pulp_id',
             'pulp_last_updated',
-            'content_count'
+            'content_count',
+            'keyring',
         )
 
     def get_content_count(self, repo) -> int:
