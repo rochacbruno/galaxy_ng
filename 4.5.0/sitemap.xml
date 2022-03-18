@@ -2,37 +2,37 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/configuration/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/content_signing/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/development/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/installation/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/tags/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
     <url>
          <loc>https://ansible.github.io/galaxy_ng/4.5.0/tags/</loc>
-         <lastmod>2022-03-10</lastmod>
+         <lastmod>2022-03-18</lastmod>
          <changefreq>daily</changefreq>
     </url>
 </urlset>
