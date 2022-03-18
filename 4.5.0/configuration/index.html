@@ -6,6 +6,8 @@
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width,initial-scale=1">
       
+        <meta name="description" content="Galaxy NG">
+      
       
       
         <link rel="canonical" href="https://ansible.github.io/galaxy_ng/4.5.0/configuration/">
@@ -15,7 +17,7 @@
     
     
       
-        <title>Configuration - Galaxy NG - Upstream for Ansible Automation Hub</title>
+        <title>Configuration - Galaxy NG</title>
       
     
     
@@ -64,6 +66,11 @@
     <label class="md-overlay" for="__drawer"></label>
     <div data-md-component="skip">
       
+        
+        <a href="#configuration" class="md-skip">
+          Skip to content
+        </a>
+      
     </div>
     <div data-md-component="announce">
       
@@ -80,7 +87,7 @@
 
 <header class="md-header" data-md-component="header">
   <nav class="md-header__inner md-grid" aria-label="Header">
-    <a href=".." title="Galaxy NG - Upstream for Ansible Automation Hub" class="md-header__button md-logo" aria-label="Galaxy NG - Upstream for Ansible Automation Hub" data-md-component="logo">
+    <a href=".." title="Galaxy NG" class="md-header__button md-logo" aria-label="Galaxy NG" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
@@ -93,7 +100,7 @@
       <div class="md-header__ellipsis">
         <div class="md-header__topic">
           <span class="md-ellipsis">
-            Galaxy NG - Upstream for Ansible Automation Hub
+            Galaxy NG
           </span>
         </div>
         <div class="md-header__topic" data-md-component="header-topic">
@@ -206,13 +213,13 @@
 
 <nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
   <label class="md-nav__title" for="__drawer">
-    <a href=".." title="Galaxy NG - Upstream for Ansible Automation Hub" class="md-nav__button md-logo" aria-label="Galaxy NG - Upstream for Ansible Automation Hub" data-md-component="logo">
+    <a href=".." title="Galaxy NG" class="md-nav__button md-logo" aria-label="Galaxy NG" data-md-component="logo">
       
   
   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54z"/></svg>
 
     </a>
-    Galaxy NG - Upstream for Ansible Automation Hub
+    Galaxy NG
   </label>
   
     <div class="md-nav__source">
@@ -273,10 +280,117 @@
       <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
       
       
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          Configuration
+          <span class="md-nav__icon md-icon"></span>
+        </label>
       
       <a href="./" class="md-nav__link md-nav__link--active">
         Configuration
       </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-your-galaxy-server" class="md-nav__link">
+    Configuring your galaxy server
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring your galaxy server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-file" class="md-nav__link">
+    Settings File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    Environment variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merging-configurations" class="md-nav__link">
+    Merging configurations
+  </a>
+  
+    <nav class="md-nav" aria-label="Merging configurations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#settings-sources" class="md-nav__link">
+    Settings sources
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-options" class="md-nav__link">
+    Configuration Options
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#galaxy" class="md-nav__link">
+    Galaxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulp-django-and-other-plugins" class="md-nav__link">
+    Pulp, Django and other plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
       
     </li>
   
@@ -334,6 +448,113 @@
               </div>
             
             
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#configuring-your-galaxy-server" class="md-nav__link">
+    Configuring your galaxy server
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuring your galaxy server">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#settings-file" class="md-nav__link">
+    Settings File
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#environment-variables" class="md-nav__link">
+    Environment variables
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#merging-configurations" class="md-nav__link">
+    Merging configurations
+  </a>
+  
+    <nav class="md-nav" aria-label="Merging configurations">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#examples" class="md-nav__link">
+    Examples:
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#settings-sources" class="md-nav__link">
+    Settings sources
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#configuration-options" class="md-nav__link">
+    Configuration Options
+  </a>
+  
+    <nav class="md-nav" aria-label="Configuration Options">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#galaxy" class="md-nav__link">
+    Galaxy
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pulp-django-and-other-plugins" class="md-nav__link">
+    Pulp, Django and other plugins
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
           
           <div class="md-content" data-md-component="content">
             <article class="md-content__inner md-typeset">
@@ -348,16 +569,214 @@
 
 
 
-  <h1>Configuration</h1>
+<h1 id="configuration">Configuration<a class="headerlink" href="#configuration" title="Permanent link">&para;</a></h1>
+<p>Galaxy NG is a Pulp Plugin and the configuration system is based on Pulp's configuration
+you can find more information about pulp configuration on <a href="https://docs.pulpproject.org/pulpcore/configuration/index.html">Pulp Docs</a></p>
+<div class="admonition tldr">
+<p class="admonition-title">Tldr</p>
+<p><a href="#configuration-options">Click here to jump to the list of configuration options</a></p>
+</div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>If you are looking for how to se configuration options on the pulp-installer take a look on <a href="/installation">installation page</a></p>
+</div>
+<h2 id="configuring-your-galaxy-server">Configuring your galaxy server<a class="headerlink" href="#configuring-your-galaxy-server" title="Permanent link">&para;</a></h2>
+<p>There are 2 sources of custom configurations for a Galaxy server the custom <strong>settings file</strong> and <strong>environment variables</strong>.</p>
+<h3 id="settings-file">Settings File<a class="headerlink" href="#settings-file" title="Permanent link">&para;</a></h3>
+<p>By default the settings file is placed under <code>/etc/pulp/settings.py</code> and is a Python file containing Python
+constants (<code>UPPER_SNAKE_CASE</code> variables) with configuration values.</p>
+<p>Example:</p>
+<div class="highlight"><span class="filename">/etc/pulp/settings.py</span><pre><span></span><code><span class="n">GALAXY_REQUIRE_CONTENT_APPROVAL</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">GALAXY_COLLECTION_SIGNING_SERVICE</span> <span class="o">=</span> <span class="s2">&quot;ansible-default&quot;</span>
+<span class="n">GALAXY_ENABLE_API_ACCESS_LOG</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<p>The variables prefixed with <code>GALAXY_</code> are specific to the Galaxy application while there are also
+unprefixed variables that are either pulp settings or django framework settings.</p>
+<p>Example:</p>
+<div class="highlight"><span class="filename">/etc/pulp/settings.py</span><pre><span></span><code><span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">AUTH_USER_MODEL</span> <span class="o">=</span> <span class="s1">&#39;galaxy.User&#39;</span>
+<span class="n">X_PULP_CONTENT_HOST</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>In most of the cases the only variables you may want to customize are those prefixed with <code>GALAXY_</code>
+and a small subset of pulp control variables taht you can check on the configuration list provided
+on the <a href="#configuration-options">bottom of this page.</a></p>
+</div>
+<h3 id="environment-variables">Environment variables<a class="headerlink" href="#environment-variables" title="Permanent link">&para;</a></h3>
+<p>As Galaxy NG is a pulp plugin it assumes the envvar prefix as <code>PULP_</code> so any variable can be 
+customized by export a <code>PULP_&lt;followed_with_the_variable&gt;</code>, example:</p>
+<div class="highlight"><span class="filename">environment</span><pre><span></span><code><span class="nb">export</span> <span class="nv">PULP_GALAXY_REQUIRE_CONTENT_APPROVAL</span><span class="o">=</span><span class="nb">true</span>
+</code></pre></div>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>Pulp uses <a href="dynaconf.com">dynaconf</a> to manage its settings, so environment variables have its
+data types inferred, for example: <code>PULP_NUMBER=4.2</code> will be available under <code>django.conf.settings.NUMBER</code> 
+as a value of type <code>float</code>, if you need to force a string enclose on quotes. <code>PULP_TEXT='4.2'</code></p>
+</div>
+<p><strong>Environment Variables</strong> have the higher precedence and will always override the values set on the
+settings file or the default settings on galaxy or pulp applications.</p>
+<h3 id="merging-configurations">Merging configurations<a class="headerlink" href="#merging-configurations" title="Permanent link">&para;</a></h3>
+<p>Dynaconf provides extensive docs on <a href="https://www.dynaconf.com/merging/">how to merge with existing values</a>
+and this is useful when there is already a compound data structure on the settings such as a list or a dictionary
+and you want to contribute to it instead of replacing.</p>
+<h4 id="examples">Examples:<a class="headerlink" href="#examples" title="Permanent link">&para;</a></h4>
+<p><strong>Merging to dictionaries:</strong></p>
+<p>On <code>galaxy_ng.app.settings</code> there is</p>
+<div class="highlight"><span class="filename">Galaxy internal default config</span><pre><span></span><code><span class="n">GALAXY_FEATURE_FLAGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s1">&#39;execution_environments&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+<span class="p">}</span>
+</code></pre></div>
+<p>If you need to add an additional feature flag without replacing the existing value:</p>
+<div class="highlight"><span class="filename">/etc/pulp/settings.py</span><pre><span></span><code><span class="n">GALAXY_FEATURE_FLAGS</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;my_new_feature_flag&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="s2">&quot;dynaconf_merge&quot;</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1">#(1)</span>
+<span class="p">}</span>
+</code></pre></div>
+<ol>
+<li>This marks this settings to be merged with existing</li>
+</ol>
+<p>And there is a Django style shortcut for the same as above:</p>
+<div class="highlight"><span class="filename">/etc/pulp/settings.py</span><pre><span></span><code><span class="n">GALAXY_FEATURE_FLAGS__my_new_feature_flag</span> <span class="o">=</span> <span class="kc">True</span>
+</code></pre></div>
+<p>Notice the <code>__</code> double underscores to denote the nesting structure.</p>
+<div class="admonition tip">
+<p class="admonition-title">Tip</p>
+<p>the merge can also be done on environment variables, just export using <code>__</code></p>
+</div>
+<p><strong>Merging to lists</strong></p>
+<p>Assuming that on <code>galaxy_ng.app.settings</code> there is the default</p>
+<div class="highlight"><span class="filename">Galaxy internal default config</span><pre><span></span><code><span class="n">GALAXY_AUTHENTICATION_CLASSES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;rest_framework.authentication.SessionAuthentication&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rest_framework.authentication.TokenAuthentication&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;rest_framework.authentication.BasicAuthentication&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</code></pre></div>
+<p>And you need to add a new custom value you can do</p>
+<div class="highlight"><span class="filename">/etc/pulp/settings.py</span><pre><span></span><code><span class="n">GALAXY_AUTHENTICATION_CLASSES</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;my.new.AuthClass&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dynaconf_merge&quot;</span> <span class="c1">#(1)  </span>
+<span class="p">]</span>
+</code></pre></div>
+<ol>
+<li>This marks this settings to be merged with existing</li>
+</ol>
+<p>And also there is a shortcut useful for environment variables using <code>@merge</code> mark.</p>
+<div class="highlight"><span class="filename">environment</span><pre><span></span><code><span class="nb">export</span> <span class="nv">GALAXY_AUTHENTICATION_CLASSES</span><span class="o">=</span><span class="s2">&quot;@merge my.new.AuthClass&quot;</span>
+</code></pre></div>
+<p>On all the cases the <code>my.new.AuthClass</code> will be appended to the end of the existing list.</p>
+<h3 id="settings-sources">Settings sources<a class="headerlink" href="#settings-sources" title="Permanent link">&para;</a></h3>
+<p>Here is a <a href="https://www.xmind.net/m/VPSF59/#">diagram explaining</a> the loading order of the settings on a Pulp System</p>
+<iframe src='https://www.xmind.net/embed/VPSF59/' width='750' height='438' frameborder='0' scrolling='no' allowfullscreen="true"></iframe>
 
-
+<h2 id="configuration-options">Configuration Options<a class="headerlink" href="#configuration-options" title="Permanent link">&para;</a></h2>
+<h3 id="galaxy">Galaxy<a class="headerlink" href="#galaxy" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>GALAXY_API_PATH_PREFIX</code></td>
+<td>The base url to access API endpoints, Default:<code>"/api/galaxy"</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_API_DEFAULT_DISTRIBUTION_BASE_PATH</code></td>
+<td>Distribution where collections go after approved, Default: <code>"published"</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_API_STAGING_DISTRIBUTION_BASE_PATH</code></td>
+<td>Distribution where collections go when waiting for approval, Default: <code>"staging"</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_API_REJECTED_DISTRIBUTION_BASE_PATH</code></td>
+<td>Distribution where collections go after rejection, Default: <code>"rejected"</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_REQUIRE_CONTENT_APPROVAL</code></td>
+<td>Sets if system requires uploaded collections to be manually approved, Default: <code>True</code> (if set to false all uploaded collections are automatically approved)</td>
+</tr>
+<tr>
+<td><code>GALAXY_FEATURE_FLAGS</code></td>
+<td>A dictionary that toggles specific flags <a href="/featureflags">see feature flags page</a></td>
+</tr>
+<tr>
+<td><code>GALAXY_ENABLE_UNAUTHENTICATED_COLLECTION_ACCESS</code></td>
+<td>Enabled anonymous browsing, Default: <code>False</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_ENABLE_UNAUTHENTICATED_COLLECTION_DOWNLOAD</code></td>
+<td>Enabled anonymous download, Default: <code>False</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_ENABLE_API_ACCESS_LOG</code></td>
+<td>Enable gathering of logs, Default: <code>False</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_ENABLE_API_ACCESS_LOG</code></td>
+<td>Enable gathering of logs, Default: <code>False</code></td>
+</tr>
+<tr>
+<td><code>CONNECTED_ANSIBLE_CONTROLLERS</code></td>
+<td>List of controllers connected , Default: <code>[]</code></td>
+</tr>
+<tr>
+<td><code>CONTENT_PATH_PREFIX</code></td>
+<td>URL prefix for content serving , Default: <code>"/api/automation-hub/v3/artifacts/collections/"</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_AUTHENTICATION_CLASSES</code></td>
+<td>List of auth classes for DRF , Default: <code>[Session, Token, Basic]</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_PERMISSION_CLASSES</code></td>
+<td>List of classes for permission backend , Default: <code>[]</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_AUTO_SIGN_COLLECTIONS</code></td>
+<td>Set if system sign collections upon approval , Default: <code>False</code></td>
+</tr>
+<tr>
+<td><code>GALAXY_COLLECTION_SIGNING_SERVICE</code></td>
+<td>The signing service to use for signing , Default: <code>ansible-default</code></td>
+</tr>
+</tbody>
+</table>
+<p>For SSO Keycloak configuration see <a href="keycloak">keycloak</a></p>
+<h3 id="pulp-django-and-other-plugins">Pulp, Django and other plugins<a class="headerlink" href="#pulp-django-and-other-plugins" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Variable name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>CONTENT_BIND</code></td>
+<td>Pulp app content bind ex: <code>unix:/path/to/socker.sock</code>, Default: <code>None</code></td>
+</tr>
+<tr>
+<td><code>DEFAULT_FILE_STORAGE</code></td>
+<td>Sets the storage backend , ex: <code>'storages.backends.s3boto3.S3Boto3Storage'</code> Default: <code>None</code></td>
+</tr>
+<tr>
+<td><code>ANSIBLE_API_HOSTNAME</code></td>
+<td>Hostname for the Ansible API, Default: <code>same as PULP_CONTENT_ORIGIN</code></td>
+</tr>
+</tbody>
+</table>
+<p>For more configuration options for pulp check on <a href="https://docs.pulpproject.org/pulpcore/configuration/index.html">https://docs.pulpproject.org/pulpcore/configuration/index.html</a></p>
 
   <hr>
 <div class="md-source-file">
   <small>
     
       Last update:
-      2022-03-15
+      2022-03-18
     
   </small>
 </div>
@@ -426,7 +845,7 @@
     <div class="md-dialog" data-md-component="dialog">
       <div class="md-dialog__inner md-typeset"></div>
     </div>
-    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "search.highlight", "search.share"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
+    <script id="__config" type="application/json">{"base": "..", "features": ["search.suggest", "search.highlight", "search.share", "content.code.annotate"], "translations": {"clipboard.copy": "Copy to clipboard", "clipboard.copied": "Copied to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.placeholder": "Type to start searching", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.term.missing": "Missing", "select.version.title": "Select version"}, "search": "../assets/javascripts/workers/search.bd0b6b67.min.js", "version": {"provider": "mike", "default": "latest"}}</script>
     
     
       <script src="../assets/javascripts/bundle.467223ff.min.js"></script>
