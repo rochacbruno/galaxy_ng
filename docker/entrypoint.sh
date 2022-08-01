@@ -166,6 +166,14 @@ setup_signing_service() {
     else
         log_message "Signing service already exists."
     fi
+
+    HAS_CONTAINER_SIGNING=$(django-admin shell -c 'from pulpcore.app.models import SigningService;print(SigningService.objects.filter(name="container-default").count())' 2>/dev/null || true)
+    if [[ "$HAS_CONTAINER_SIGNING" -eq "0" ]]; then
+        log_message "Creating container signing service. using key ${KEY_ID}"
+        django-admin add-signing-service container-default /var/lib/pulp/scripts/container_sign.sh ${KEY_ID} --class container:ManifestSigningService 2>/dev/null || true
+    else
+        log_message "Container signing service already exists."
+    fi
 }
 
 redis_connection_hack() {
