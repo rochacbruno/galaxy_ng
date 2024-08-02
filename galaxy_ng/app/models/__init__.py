@@ -13,6 +13,8 @@ from .namespace import Namespace, NamespaceLink
 from .organization import Organization, Team
 from .synclist import SyncList
 
+from ansible_base.rbac import permission_registry
+
 __all__ = (
     # aiindex
     "AIIndexDenyList",
@@ -37,4 +39,12 @@ __all__ = (
     "Team",
     # synclist
     "SyncList",
+)
+
+
+permission_registry.register(
+    Namespace, parent_field_name=None
+)
+permission_registry.register(
+    CollectionImport, parent_field_name='namespace'
 )

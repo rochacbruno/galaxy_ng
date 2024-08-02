@@ -55,6 +55,7 @@ def post(settings: Dynaconf) -> Dict[str, Any]:
     data.update(configure_api_base_path(settings))
     data.update(configure_legacy_roles(settings))
     data.update(configure_dab_required_settings(settings))
+    data.update(configure_dab_rbac_settings(settings))
 
     # This should go last, and it needs to receive the data from the previous configuration
     # functions because this function configures the rest framework auth classes based off
@@ -737,4 +738,36 @@ def configure_dab_required_settings(settings: Dynaconf) -> Dict[str, Any]:
     for key in dir(dynamic_settings):
         if key.isupper() and settings.get(key, notset) is notset:
             data[key] = getattr(dynamic_settings, key)
+    return data
+
+
+def configure_dab_rbac_settings(settings: Dynaconf) -> Dict[str, Any]:
+    data = {}
+
+    RBAC_DEFAULTS = [
+        # ('ANSIBLE_BASE_TEAM_MODEL', 'galaxy.Team'),
+        ('ANSIBLE_BASE_ROLE_CREATOR_NAME', '{obj._meta.model_name} Creator Role'),
+        ('ANSIBLE_BASE_DELETE_REQUIRE_CHANGE', False),
+        ('ANSIBLE_BASE_ALLOW_TEAM_PARENTS', False),
+        ('ANSIBLE_BASE_ALLOW_TEAM_ORG_ADMIN', False),
+        ('ANSIBLE_BASE_MANAGED_ROLE_REGISTRY', {}),
+        ('ANSIBLE_BASE_ALLOW_CUSTOM_ROLES', True),
+        ('ANSIBLE_BASE_ALLOW_CUSTOM_TEAM_ROLES', True),
+        # Can manage system roles in API
+        ('ANSIBLE_BASE_ALLOW_SINGLETON_ROLES_API', True),
+        # required for user level rbac roles&permissions
+        ('ANSIBLE_BASE_ALLOW_SINGLETON_USER_ROLES', True),
+        ('ANSIBLE_BASE_ALLOW_SINGLETON_TEAM_ROLES', True),
+        ('ANSIBLE_BASE_BYPASS_SUPERUSER_FLAGS', ['is_superuser']),
+        ('ANSIBLE_BASE_EVALUATIONS_IGNORE_CONFLICTS', False),
+        ('ANSIBLE_BASE_CACHE_PARENT_PERMISSIONS', False),
+    ]
+
+    for key, value in RBAC_DEFAULTS:
+        empty = object()
+        if settings.get(key, empty) is empty:
+            data[key] = value
+
+    data["INSTALLED_APPS"] = ["ansible_base.rbac", "dynaconf_merge_unique"]
+
     return data
