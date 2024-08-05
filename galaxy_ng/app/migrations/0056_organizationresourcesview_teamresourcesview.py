@@ -10,6 +10,7 @@ class Migration(migrations.Migration):
         ("galaxy", "0055_galaxy_role_defs_to_dab_defs"),
     ]
 
+    '''
     operations = [
         migrations.CreateModel(
             name="OrganizationResourcesView",
@@ -50,3 +51,6 @@ class Migration(migrations.Migration):
             },
         ),
     ]
+    '''
+
+    operations = []
