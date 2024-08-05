@@ -1,5 +1,6 @@
 from rest_framework import viewsets
 from django_filters.rest_framework import DjangoFilterBackend
+from django.http import JsonResponse
 
 from ansible_base.rest_pagination.default_paginator import DefaultPaginator
 
@@ -16,6 +17,13 @@ from .serializers import TeamSerializer
 
 from galaxy_ng.app.models.auth import User
 from galaxy_ng.app.models.auth import Group
+
+
+def version_view(request):
+    data = {
+        "version": "2024-08-05T18:00:00"
+    }
+    return JsonResponse(data)
 
 
 class UserViewSet(viewsets.ModelViewSet):
