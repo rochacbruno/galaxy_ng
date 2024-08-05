@@ -402,24 +402,23 @@ ANSIBLE_BASE_JWT_KEY = None
 # NOTE: For the Resource Sync Feature the following are required:
 # RESOURCE_SERVER = {"URL": str, "SECRET_KEY": str, "VALIDATE_HTTPS": bool}
 
-# ANSIBLE BASE RBAC
+# -- ANSIBLE BASE RBAC --
+# If a role does not already exist that can give those object permissions
+# then the system must create one, this is used for naming the auto-created role
 ANSIBLE_BASE_ROLE_CREATOR_NAME = "{obj._meta.model_name} Creator Role"
+# Require change permission to get delete permission
 ANSIBLE_BASE_DELETE_REQUIRE_CHANGE = False
+# For assignments
 ANSIBLE_BASE_ALLOW_TEAM_PARENTS = False
 ANSIBLE_BASE_ALLOW_TEAM_ORG_ADMIN = False
-ANSIBLE_BASE_MANAGED_ROLE_REGISTRY = {}
-ANSIBLE_BASE_ALLOW_CUSTOM_ROLES = True
+ANSIBLE_BASE_ALLOW_TEAM_ORG_MEMBER = True
+# For role definitions
 ANSIBLE_BASE_ALLOW_CUSTOM_TEAM_ROLES = True
-# Can manage system roles in API
-ANSIBLE_BASE_ALLOW_SINGLETON_ROLES_API = True
 # required for user level rbac roles&permissions
 ANSIBLE_BASE_ALLOW_SINGLETON_USER_ROLES = True
 ANSIBLE_BASE_ALLOW_SINGLETON_TEAM_ROLES = True
-ANSIBLE_BASE_BYPASS_SUPERUSER_FLAGS = ["is_superuser"]
+# Pass ignore_conflicts=False for bulk_create calls for role evaluations
 ANSIBLE_BASE_EVALUATIONS_IGNORE_CONFLICTS = False
-ANSIBLE_BASE_CACHE_PARENT_PERMISSIONS = False
-ANSIBLE_BASE_ALLOW_TEAM_ORG_PERMS = True
-ANSIBLE_BASE_ALLOW_TEAM_ORG_MEMBER = True
 
 # WARNING: This setting is used in database migrations to create a default organization.
 DEFAULT_ORGANIZATION_NAME = "Default"
