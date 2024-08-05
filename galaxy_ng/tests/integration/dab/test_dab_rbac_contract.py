@@ -137,7 +137,7 @@ def test_create_custom_namespace_system_admin_role(custom_role_creator, galaxy_c
     assert set(pulp_role["permissions"]) == set(NS_FIXTURE_DATA["permissions"])
 
 
-def test_give_custom_role_system(galaxy_client, custom_role_creator):
+def test_give_user_custom_role_system(galaxy_client, custom_role_creator):
     system_ns_role = custom_role_creator(NS_FIXTURE_DATA)
     gc = galaxy_client("admin")
     user_r = gc.get("/api/galaxy/_ui/v2/users/")
@@ -149,6 +149,22 @@ def test_give_custom_role_system(galaxy_client, custom_role_creator):
     )
     # TODO: verify that assignment is seen in DAB and pulp APIs
     # TODO: make a request as the user and see that it works
+
+
+def test_give_team_custom_role_system(galaxy_client, custom_role_creator):
+    system_ns_role = custom_role_creator(NS_FIXTURE_DATA)
+    gc = galaxy_client("admin")
+    teams_r = gc.get("/api/galaxy/_ui/v2/teams/")
+    assert teams_r["count"] > 0
+    team = teams_r["results"][0]
+    gc.post(
+        "/api/galaxy/_ui/v2/role_team_assignments/",
+        body={"role_definition": system_ns_role["id"], "team": team["id"]},
+    )
+
+
+# TODO: test making a user a member of a team (supported locally? unclear)
+# TODO: test that a user can get a permission via membership in a team
 
 
 def assert_assignments(gc, user, namespace, expected=0):
