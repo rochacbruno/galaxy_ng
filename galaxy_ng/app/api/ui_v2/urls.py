@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 
 from .views import version_view
 from .views import UserViewSet
-from .views import GroupViewSet
+# from .views import GroupViewSet
 from .views import OrganizationViewSet
 from .views import TeamViewSet
 
