@@ -25,7 +25,7 @@ from ansible_base.rbac.models import RoleUserAssignment
 from ansible_base.rbac.models import RoleDefinition
 from pulpcore.plugin.util import assign_role
 from pulpcore.plugin.util import remove_role
-from pulpcore.app.models.role import GroupRole, UserRole, Role
+from pulpcore.plugin.models.role import GroupRole, UserRole, Role
 
 
 @receiver(post_save, sender=AnsibleRepository)
