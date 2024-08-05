@@ -43,6 +43,8 @@ class GroupManager(auth_models.GroupManager):
 class Group(PulpGroup):
     objects = GroupManager()
 
+    resource = AnsibleResourceField(primary_key_field="id")
+
     class Meta:
         proxy = True
 
