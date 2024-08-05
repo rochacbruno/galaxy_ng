@@ -15,7 +15,6 @@ class UserViewFilter(django_filters.FilterSet):
         field_name="username", lookup_expr="icontains"
     )
 
-
     class Meta:
         model = User
         fields = ["username", "username__contains", "is_superuser", "resource__ansible_id"]

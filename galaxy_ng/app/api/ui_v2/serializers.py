@@ -27,7 +27,6 @@ class UserSerializer(UserSerializerV1):
             'resource',
         ]
 
-
     def get_resource(self, obj):
         return obj.resource.summary_fields()
 

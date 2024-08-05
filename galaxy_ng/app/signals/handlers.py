@@ -191,9 +191,11 @@ def copy_permission_role_to_rd(instance, action, model, pk_set, reverse, **kwarg
         return
     if reverse:
         # NOTE: this should not work because of DAB RBAC signals either
-        # but this exception should alert us to any problems via downstream testing hopefully, if that is generalized
+        # but this exception should alert us to any problems via downstream testing
+        # hopefully, if that is generalized
         raise RuntimeError(
-            "Removal of permssions through reverse relationship not supported due to galaxy_ng signals"
+            "Removal of permssions through reverse relationship"
+            + " not supported due to galaxy_ng signals"
         )
 
     rd = RoleDefinition.objects.filter(name=instance.name).first()
@@ -237,9 +239,11 @@ def copy_permission_rd_to_role(instance, action, model, pk_set, reverse, **kwarg
         return
     if reverse:
         # NOTE: this should not work because of DAB RBAC signals either
-        # but this exception should alert us to any problems via downstream testing hopefully, if that is generalized
+        # but this exception should alert us to any problems via downstream testing
+        #  hopefully, if that is generalized
         raise RuntimeError(
-            "Removal of permssions through reverse relationship not supported due to galaxy_ng signals"
+            "Removal of permssions through reverse relationship"
+            + " not supported due to galaxy_ng signals"
         )
 
     role = Role.objects.filter(name=instance.name).first()
