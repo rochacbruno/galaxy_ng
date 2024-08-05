@@ -13,7 +13,7 @@ from ansible_base.rbac.urls import (
 
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
-router.register(r'groups', GroupViewSet)
+# router.register(r'groups', GroupViewSet)
 router.register(r'organizations', OrganizationViewSet)
 router.register(r'teams', TeamViewSet)
 
