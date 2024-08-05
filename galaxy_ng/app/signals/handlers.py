@@ -313,13 +313,13 @@ def _get_pulp_role_kwargs(assignment):
     kwargs = {}
     if assignment.object_id:
         kwargs["obj"] = assignment.content_object
-    if assignment.user_id:
+    if isinstance(assignment, RoleUserAssignment):
         entity = assignment.user
-    elif assignment.team_id:
+    elif isinstance(assignment, RoleTeamAssignment):
         entity = assignment.team.group
     else:
         raise Exception(f"Could not find entity for DAB assignment {assignment}")
-    return ((assignment.role_definition.name, entity), kwargs)
+    return (assignment.role_definition.name, entity), kwargs
 
 
 def _apply_dab_assignment(assignment):

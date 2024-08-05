@@ -109,3 +109,4 @@ permission_registry.register(
 permission_registry.register(
     CollectionImport, parent_field_name='namespace'
 )
+permission_registry.register(Team)
