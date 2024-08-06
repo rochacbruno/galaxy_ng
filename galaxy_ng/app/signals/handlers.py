@@ -290,7 +290,7 @@ def copy_pulp_group_role(sender, instance, created, **kwargs):
         return
     with pulp_rbac_signals():
         rd = RoleDefinition.objects.filter(name=instance.role.name).first()
-        if rd:
+        if rd and hasattr(instance.group, 'team'):
             if instance.content_object:
                 rd.give_permission(instance.group.team, instance.content_object)
             else:
@@ -303,7 +303,7 @@ def delete_pulp_group_role(sender, instance, **kwargs):
         return
     with pulp_rbac_signals():
         rd = RoleDefinition.objects.filter(name=instance.role.name).first()
-        if rd:
+        if rd and hasattr(instance.group, 'team'):
             if instance.content_object:
                 rd.remove_permission(instance.group.team, instance.content_object)
             else:
