@@ -7,7 +7,7 @@ class Command(BaseCommand):
 
         print("Migrating role definitions for DAB ...")
 
-        from django.contrib.auth.models import Permission
+        # from django.contrib.auth.models import Permission
         from pulpcore.plugin.models.role import Role
         from ansible_base.rbac.models import RoleDefinition
         from ansible_base.rbac.models import DABPermission
