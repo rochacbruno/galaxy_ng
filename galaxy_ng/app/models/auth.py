@@ -3,6 +3,8 @@ import logging
 from django.contrib.auth import models as auth_models
 
 from pulpcore.plugin.models import Group as PulpGroup
+from ansible_base.resource_registry.fields import AnsibleResourceField
+
 
 log = logging.getLogger(__name__)
 
@@ -21,7 +23,7 @@ RH_PARTNER_ENGINEER_GROUP = f"{SYSTEM_SCOPE}:partner-engineers"
 class User(auth_models.AbstractUser):
     """Custom user model."""
 
-    pass
+    resource = AnsibleResourceField(primary_key_field="id")
 
 
 class GroupManager(auth_models.GroupManager):
@@ -40,6 +42,8 @@ class GroupManager(auth_models.GroupManager):
 
 class Group(PulpGroup):
     objects = GroupManager()
+
+    resource = AnsibleResourceField(primary_key_field="id")
 
     class Meta:
         proxy = True
