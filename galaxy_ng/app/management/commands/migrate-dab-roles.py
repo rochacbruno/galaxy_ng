@@ -8,12 +8,9 @@ class Command(BaseCommand):
         print("Migrating role definitions for DAB ...")
 
         from django.contrib.auth.models import Permission
-        # from django.contrib.contenttypes.models import ContentType
+        from pulpcore.plugin.models.role import Role
         from ansible_base.rbac.models import RoleDefinition
         from ansible_base.rbac.models import DABPermission
-
-        from galaxy_ng.app.access_control.statements.standalone import STANDALONE_STATEMENTS
-        from galaxy_ng.app.access_control.statements.roles import LOCKED_ROLES
 
         # The UI code is the only place I could find the descriptions for the roles ...
         # https://github.com/ansible/ansible-hub-ui/blob/364d9af2d80d2defecfab67f44706798b8d2cf83/src/utilities/translate-locked-role.ts#L9
@@ -45,26 +42,6 @@ class Command(BaseCommand):
             'galaxy.user_admin': 'View, add, remove and change users.',
         }
 
-        # make a list of model_or_obj perms that galaxy actually cares about ...
-        galaxy_model_perms = set()
-        for statement_group, action_items in STANDALONE_STATEMENTS.items():
-            for action_item in action_items:
-                if 'condition' not in action_item:
-                    continue
-                if isinstance(action_item['condition'], list):
-                    conditions = action_item['condition']
-                else:
-                    conditions = [action_item['condition']]
-                for condition in conditions:
-                    if not condition.startswith('has_model_'):
-                        continue
-                    galaxy_model_perms.add(condition.split(':', 1)[1])
-
-        # include permissions from the LOCKED_ROLES struct ...
-        for role_name, permissions in LOCKED_ROLES.items():
-            for perm in permissions['permissions']:
-                galaxy_model_perms.add(perm)
-
         # make an index of all current dab permissions ...
         dabperm_map = {}
         for dabperm in DABPermission.objects.all():
@@ -73,38 +50,23 @@ class Command(BaseCommand):
             app_label = dabperm.content_type.app_label
             dabperm_map[(app_label, ctype_model, perm_codename)] = dabperm
 
-        # For every permission in the system that galaxy cares about, make a dabpermission
-        for perm in Permission.objects.all():
-
-            # skip if not in the list of things galaxy cares about ...
-            gkey = f'{perm.content_type.app_label}.{perm.codename}'
-            if gkey not in galaxy_model_perms:
-                continue
-
-            # model = perm.content_type.model
-            dkey = (perm.content_type.app_label, perm.content_type.model, perm.codename)
-            if dkey in dabperm_map:
-                dabperm = dabperm_map[dkey]
-            else:
-                print(f'creating perm {dkey} ..')
-                dabperm = DABPermission.objects.create(
-                    codename=perm.codename,
-                    content_type=perm.content_type,
-                    name=perm.name
-                )
-                dabperm_map[dkey] = dabperm
-
         # copy all of the galaxy roles to dab roledefinitions ...
-        for role_name, permissions in LOCKED_ROLES.items():
+        for role in Role.objects.all():
+            role_name = role.name
             role_description = galaxy_role_description.get(role_name, '')
             print(f'{role_name} ... {role_description}')
 
             # find the related permissions based on app name and permission name ...
             related_perms = []
-            for pcode in permissions['permissions']:
-                pcode_parts = pcode.split('.')
-                app_name = pcode_parts[0]
-                perm_name = pcode_parts[1]
+
+            # find all the related content types from the permissions ...
+            ctypes = []
+
+            for perm in role.permissions.all():
+
+                app_name = perm.content_type.app_label
+                perm_name = perm.codename
+                ctypes.append((perm.content_type_id, perm.content_type))
 
                 for k, v in dabperm_map.items():
                     if k[0] == app_name and k[2] == perm_name:
@@ -112,8 +74,9 @@ class Command(BaseCommand):
                         break
 
             # we need ALL of the necessary permissions ...
-            assert len(related_perms) == \
-                len(permissions['permissions']), f"didn't find all the permissions for {role_name}"
+            if len(related_perms) != role.permissions.count():
+                print(f"didn't find all the permissions for {role_name}")
+                continue
 
             # get or make the def ...
             rd, created = RoleDefinition.objects.get_or_create(name=role_name)
@@ -130,21 +93,6 @@ class Command(BaseCommand):
                     rd.permissions.add(rperm)
 
             # what are all the content types involved ... ?
-            ctypes = []
-            for permission_name in permissions['permissions']:
-                app_label = permission_name.split('.', 1)[0]
-                perm_name = permission_name.split('.', 1)[1]
-                try:
-                    perm = Permission.objects.get(
-                        codename=perm_name,
-                        content_type__app_label=app_label
-                    )
-                except Exception as e:
-                    # print(e)
-                    # import epdb; epdb.st()
-                    raise e
-                ctypes.append((perm.content_type_id, perm.content_type))
-
             ctypes = sorted(set(ctypes))
             if len(ctypes) == 1:
                 if rd.content_type_id != ctypes[0][1]:

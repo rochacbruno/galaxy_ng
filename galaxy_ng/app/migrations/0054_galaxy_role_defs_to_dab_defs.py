@@ -37,16 +37,6 @@ def copy_roles_to_role_definitions(apps, schema_editor):
     DABPermission = apps.get_model('dab_rbac', 'DABPermission')
     RoleDefinition = apps.get_model('dab_rbac', 'RoleDefinition')
 
-    while True:
-        print('-' * 100)
-        print(f'{Role.objects.count()}')
-        print('-' * 100)
-        break
-
-        if Role.objects.count() > 0:
-            break
-        time.sleep(2)
-
     for corerole in Role.objects.all():
         print(f'CREATE {corerole} {corerole.name}')
         roledef, _ = RoleDefinition.objects.get_or_create(name=corerole.name)
@@ -90,8 +80,8 @@ class Migration(migrations.Migration):
             create_permissions_as_operation,
             reverse_create_permissions_as_operation
         ),
-        migrations.RunPython(
-            copy_roles_to_role_definitions,
-            reverse_copy_roles_to_role_definitions
-        ),
+        # migrations.RunPython(
+        #     copy_roles_to_role_definitions,
+        #     reverse_copy_roles_to_role_definitions
+        # ),
     ]
