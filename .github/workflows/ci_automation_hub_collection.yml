@@ -25,6 +25,11 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: (Linux) Install docker compose
+        run: |
+          curl -L -o /tmp/docker-compose https://github.com/docker/compose/releases/download/v2.29.1/docker-compose-linux-x86_64
+          install /tmp/docker-compose /usr/local/bin/
+
       - name: install ansible
         run: pip3 install ansible
 
