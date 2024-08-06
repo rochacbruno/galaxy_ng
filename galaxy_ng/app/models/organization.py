@@ -10,6 +10,7 @@ from django_lifecycle import AFTER_UPDATE, BEFORE_CREATE, LifecycleModelMixin, h
 from pulpcore.plugin.models import Group as PulpGroup
 
 from galaxy_ng.app.models.auth import Group
+from ansible_base.resource_registry.fields import AnsibleResourceField
 
 
 class OrganizationManager(models.Manager):
@@ -26,6 +27,8 @@ class Organization(LifecycleModelMixin, AbstractOrganization):
         related_name="organizations",
         help_text="The list of users in this organization.",
     )
+
+    resource = AnsibleResourceField(primary_key_field="id")
 
     objects = OrganizationManager()
 
@@ -50,6 +53,8 @@ class Team(LifecycleModelMixin, AbstractTeam):
         related_name="+",
         help_text="Related group record.",
     )
+
+    resource = AnsibleResourceField(primary_key_field="id")
 
     def group_name(self):
         if self.organization.name == settings.DEFAULT_ORGANIZATION_NAME:

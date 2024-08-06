@@ -60,7 +60,7 @@ def reverse_copy_permissions_to_role_definitions(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('galaxy', '0054_dab_resource_views'),
+        ('galaxy', '0053_wait_for_dab_rbac'),
         ('dab_rbac', '__first__'),
     ]
 

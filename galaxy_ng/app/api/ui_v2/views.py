@@ -6,10 +6,8 @@ from ansible_base.rest_pagination.default_paginator import DefaultPaginator
 
 from .filters import UserViewFilter
 from .filters import GroupViewFilter
-from .filters import OrganizationResourcesViewFilter
-from .filters import TeamResourcesViewFilter
-from .models import OrganizationResourcesView
-from .models import TeamResourcesView
+from .filters import OrganizationFilter
+from .filters import TeamFilter
 from .serializers import UserSerializer
 from .serializers import GroupSerializer
 from .serializers import OrganizationSerializer
@@ -17,6 +15,8 @@ from .serializers import TeamSerializer
 
 from galaxy_ng.app.models.auth import User
 from galaxy_ng.app.models.auth import Group
+from galaxy_ng.app.models.organization import Organization
+from galaxy_ng.app.models.organization import Team
 
 
 def version_view(request):
@@ -43,16 +43,17 @@ class GroupViewSet(viewsets.ModelViewSet):
 
 
 class OrganizationViewSet(viewsets.ModelViewSet):
-    queryset = OrganizationResourcesView.objects.all().order_by('organization__id')
+    # queryset = OrganizationResourcesView.objects.all().order_by('organization__id')
+    queryset = Organization.objects.all().order_by('pk')
     serializer_class = OrganizationSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = OrganizationResourcesViewFilter
+    filterset_class = OrganizationFilter
     pagination_class = DefaultPaginator
 
 
 class TeamViewSet(viewsets.ModelViewSet):
-    queryset = TeamResourcesView.objects.all().order_by('team__id')
+    queryset = Team.objects.all().order_by('id')
     serializer_class = TeamSerializer
     filter_backends = (DjangoFilterBackend,)
-    filterset_class = TeamResourcesViewFilter
+    filterset_class = TeamFilter
     pagination_class = DefaultPaginator

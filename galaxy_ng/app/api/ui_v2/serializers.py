@@ -1,12 +1,11 @@
 # from django.contrib.auth.models import User
 from rest_framework import serializers
 
-from .models import OrganizationResourcesView
-from .models import TeamResourcesView
-
 from galaxy_ng.app.api.ui.serializers import UserSerializer as UserSerializerV1
 from galaxy_ng.app.models.auth import User
 from galaxy_ng.app.models.auth import Group
+from galaxy_ng.app.models.organization import Organization
+from galaxy_ng.app.models.organization import Team
 
 
 class UserSerializer(UserSerializerV1):
@@ -43,11 +42,10 @@ class GroupSerializer(serializers.ModelSerializer):
 class OrganizationSerializer(serializers.ModelSerializer):
 
     id = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
     resource = serializers.SerializerMethodField()
 
     class Meta:
-        model = OrganizationResourcesView
+        model = Organization
         fields = [
             'id',
             'name',
@@ -55,10 +53,7 @@ class OrganizationSerializer(serializers.ModelSerializer):
         ]
 
     def get_id(self, obj):
-        return obj.organization.id
-
-    def get_name(self, obj):
-        return obj.organization.name
+        return obj.pk
 
     def get_resource(self, obj):
         return {
@@ -69,14 +64,12 @@ class OrganizationSerializer(serializers.ModelSerializer):
 
 class TeamSerializer(serializers.ModelSerializer):
 
-    id = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
     group = serializers.SerializerMethodField()
     organization = serializers.SerializerMethodField()
     resource = serializers.SerializerMethodField()
 
     class Meta:
-        model = TeamResourcesView
+        model = Team
         fields = [
             'id',
             'name',
@@ -84,12 +77,6 @@ class TeamSerializer(serializers.ModelSerializer):
             'organization',
             'resource',
         ]
-
-    def get_id(self, obj):
-        return obj.team.id
-
-    def get_name(self, obj):
-        return obj.team.name
 
     def get_group(self, obj):
         return {
