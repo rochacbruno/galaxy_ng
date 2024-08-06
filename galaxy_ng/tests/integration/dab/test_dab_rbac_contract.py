@@ -158,11 +158,11 @@ def test_give_user_custom_role_system(galaxy_client, custom_role_creator):
 def test_give_team_custom_role_system(galaxy_client, custom_role_creator):
     system_ns_role = custom_role_creator(NS_FIXTURE_DATA)
     gc = galaxy_client("admin")
-    teams_r = gc.get("/api/galaxy/_ui/v2/teams/")
+    teams_r = gc.get("_ui/v2/teams/")
     assert teams_r["count"] > 0
     team = teams_r["results"][0]
     gc.post(
-        "/api/galaxy/_ui/v2/role_team_assignments/",
+        "_ui/v2/role_team_assignments/",
         body={"role_definition": system_ns_role["id"], "team": team["id"]},
     )
 
