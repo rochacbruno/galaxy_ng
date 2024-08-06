@@ -5,7 +5,7 @@ import pytest
 
 def test_list_namespace_permissions(galaxy_client):
     gc = galaxy_client("admin")
-    r = gc.get("/api/galaxy/_ui/v2/role_metadata/")
+    r = gc.get("_ui/v2/role_metadata/")
     assert "galaxy.namespace" in r["allowed_permissions"]
     allowed_perms = r["allowed_permissions"]["galaxy.namespace"]
     assert set(allowed_perms) == {
@@ -24,7 +24,9 @@ def test_list_namespace_permissions(galaxy_client):
 def test_role_definition_options(galaxy_client):
     gc = galaxy_client("admin")
     # TODO: add support for options in GalaxyClient in galaxykit
-    options_r = gc._http("options", "/api/galaxy/_ui/v2/role_definitions/")
+    galaxy_root = gc.galaxy_root
+    api_prefix = galaxy_root[gc.galaxy_root.index('/api/'):]
+    options_r = gc._http("options", api_prefix + "_ui/v2/role_definitions/")
     assert "actions" in options_r
     assert "POST" in options_r["actions"]
     assert "permissions" in options_r["actions"]["POST"]
@@ -73,8 +75,8 @@ NS_FIXTURE_DATA = {
     ],
 }
 
-DAB_ROLE_URL = "/api/galaxy/_ui/v2/role_definitions/"
-PULP_ROLE_URL = "/api/galaxy/pulp/api/v3/roles/"
+DAB_ROLE_URL = "_ui/v2/role_definitions/"
+PULP_ROLE_URL = "pulp/api/v3/roles/"
 
 
 # these fixtures are function-scoped so they will be deleted
@@ -142,11 +144,11 @@ def test_create_custom_namespace_system_admin_role(custom_role_creator, galaxy_c
 def test_give_custom_role_system(galaxy_client, custom_role_creator):
     system_ns_role = custom_role_creator(NS_FIXTURE_DATA)
     gc = galaxy_client("admin")
-    user_r = gc.get("/api/galaxy/_ui/v2/users/")
+    user_r = gc.get("_ui/v2/users/")
     assert user_r["count"] > 0
     user = user_r["results"][0]
     gc.post(
-        "/api/galaxy/_ui/v2/role_user_assignments/",
+        "_ui/v2/role_user_assignments/",
         body={"role_definition": system_ns_role["id"], "user": user["id"]},
     )
     # TODO: verify that assignment is seen in DAB and pulp APIs
@@ -160,7 +162,7 @@ def assert_assignments(gc, user, namespace, expected=0):
 
     # Assure the assignment shows up in the DAB RBAC API
     r = gc.get(
-        f"/api/galaxy/_ui/v2/role_user_assignments/?user={user['id']}&object_id={namespace['id']}"
+        f"_ui/v2/role_user_assignments/?user={user['id']}&object_id={namespace['id']}"
     )
     assert r["count"] == expected
 
@@ -175,7 +177,7 @@ def test_give_custom_role_object(
     custom_obj_role = custom_role_creator(data)
 
     gc = galaxy_client("admin")
-    user_r = gc.get("/api/galaxy/_ui/v2/users/")
+    user_r = gc.get("_ui/v2/users/")
     assert user_r["count"] > 0
     user = user_r["results"][0]
 
@@ -186,7 +188,7 @@ def test_give_custom_role_object(
     dab_assignment = None
     if by_api == "dab":
         dab_assignment = gc.post(
-            "/api/galaxy/_ui/v2/role_user_assignments/",
+            "_ui/v2/role_user_assignments/",
             body={
                 "role_definition": custom_obj_role["id"],
                 "user": user["id"],
@@ -212,7 +214,7 @@ def test_give_custom_role_object(
     # Remove the permission from before
     if by_api == "dab":
         with pytest.raises(ValueError):
-            gc.delete(f"/api/galaxy/_ui/v2/role_user_assignments/{dab_assignment['id']}/")
+            gc.delete(f"_ui/v2/role_user_assignments/{dab_assignment['id']}/")
     else:
         payload = {
             "name": namespace["name"],
