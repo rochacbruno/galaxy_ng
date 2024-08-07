@@ -182,6 +182,14 @@ def assert_assignments(gc, user, namespace, expected=0):
     )
     assert r["count"] == expected
 
+    # Ensure summary_fields is populated with expected sub keys
+    summary_fields = r["results"][0]["summary_fields"]
+    expected_fields = {"created_by", "role_definition", "user", "content_objet"}
+    assert expected_fields.issubset(summary_fields)
+    # assert each entry has at least the id field
+    for field in expected_fields:
+        assert "id" in summary_fields[field]
+
 
 @pytest.mark.parametrize("by_api", ["dab", "pulp"])
 def test_give_custom_role_object(
