@@ -15,9 +15,19 @@ class UserViewFilter(django_filters.FilterSet):
         field_name="username", lookup_expr="icontains"
     )
 
+    username__icontains = django_filters.CharFilter(
+        field_name="username", lookup_expr="icontains"
+    )
+
     class Meta:
         model = User
-        fields = ["username", "username__contains", "is_superuser", "resource__ansible_id"]
+        fields = [
+            "username",
+            "username__contains",
+            "username__icontains",
+            "is_superuser",
+            "resource__ansible_id"
+        ]
 
 
 class GroupViewFilter(django_filters.FilterSet):
@@ -42,6 +52,14 @@ class TeamFilter(django_filters.FilterSet):
         field_name="resource__ansible_id", lookup_expr="exact"
     )
 
+    name__contains = django_filters.CharFilter(
+        field_name="name", lookup_expr="icontains"
+    )
+
+    name__icontains = django_filters.CharFilter(
+        field_name="name", lookup_expr="icontains"
+    )
+
     class Meta:
         model = Team
-        fields = ["resource__ansible_id"]
+        fields = ["resource__ansible_id", "name__contains", "name__icontains"]
