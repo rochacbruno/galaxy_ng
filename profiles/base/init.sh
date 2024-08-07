@@ -150,7 +150,7 @@ fi
 #     set_up_test_data
 # fi
 
-if [[ "$DAB_RBAC_ENABLED" -eq "1" ]]; then
+if [[ "${DAB_RBAC_ENABLED:-0}" -eq "1" ]]; then
     pulpcore-manager migrate-dab-roles
 fi
 
