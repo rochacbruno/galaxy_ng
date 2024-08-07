@@ -16,4 +16,9 @@ class PulpGalaxyPluginAppConfig(PulpPluginAppConfig):
         from pulpcore.app.models.task import Task
         from ansible_base.rbac import permission_registry
 
-        permission_registry.register(ContainerNamespace, ContainerRepository, Task, parent_field_name=None)
+        permission_registry.register(
+            ContainerNamespace,
+            ContainerRepository,
+            Task,
+            parent_field_name=None
+        )
