@@ -15,6 +15,26 @@ pytestmark = pytest.mark.qa  # noqa: F821
     not os.getenv("ENABLE_DAB_TESTS"),
     reason="Skipping test because ENABLE_DAB_TESTS is not set"
 )
+def test_dab_roledefs_match_pulp_roles(galaxy_client):
+    gc = galaxy_client("admin", ignore_cache=True)
+    roles = gc.get('pulp/api/v3/roles/?name__startswith=galaxy')
+    roledefs = gc.get('_ui/v2/role_definitions/')
+
+    roledefmap = dict((x['name'], x) for x in roledefs['results'])
+
+    missing = []
+    for role in roles['results']:
+        if role['name'] not in roledefmap:
+            missing.append(role['name'])
+
+    assert not missing
+
+
+@pytest.mark.deployment_standalone
+@pytest.mark.skipif(
+    not os.getenv("ENABLE_DAB_TESTS"),
+    reason="Skipping test because ENABLE_DAB_TESTS is not set"
+)
 def test_dab_rbac_namespace_owner_by_user(galaxy_client, random_namespace, random_username):
     """Tests the galaxy.system_auditor role can be added to a user and has the right perms."""
 
