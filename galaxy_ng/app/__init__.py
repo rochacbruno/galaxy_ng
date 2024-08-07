@@ -13,7 +13,7 @@ class PulpGalaxyPluginAppConfig(PulpPluginAppConfig):
         super().ready()
         from .signals import handlers  # noqa
         from pulp_container.app.models import ContainerNamespace, ContainerRepository
-        from pulpcore.app.models.task import Task
+        from pulpcore.plugin.models import Task
         from ansible_base.rbac import permission_registry
 
         permission_registry.register(
